@@ -16,7 +16,6 @@ namespace Infrastructure.Repositories
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
-
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
@@ -64,10 +63,8 @@ namespace Infrastructure.Repositories
         {
             _dbContext.Set<T>().Add(entity);
             await _dbContext.SaveChangesAsync();
-
             return entity;
         }
-
         public async Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
@@ -79,7 +76,6 @@ namespace Infrastructure.Repositories
             _dbContext.Set<T>().Remove(entity);
             await _dbContext.SaveChangesAsync();
         }
-
 
         public async Task<List<T>> AddMultiAsync(List<T> entity)
         {

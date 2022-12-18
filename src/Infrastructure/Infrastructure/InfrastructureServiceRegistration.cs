@@ -13,8 +13,7 @@ namespace Infrastructure
         {
             services.AddDbContext<MovieContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("MovieConnectionString")));
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
-           
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));     
             services.AddScoped<IPageDataRepository, PageDataRepository>();
             services.AddScoped<IMovieRepository, MovieRepository>();
             return services;

@@ -1,12 +1,8 @@
 using Application.Features.Movies.Queries;
 using Domain.Entities;
-using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
 using WebApi.ViewModel;
-
 namespace WebApi.Controllers;
 
 [ApiController]
@@ -33,8 +29,7 @@ public class MovieController : ControllerBase
             Iso_639_1 = x.Iso_639_1,
             Item_count = x.Item_count,
             list_type = x.list_type,
-            Name = x.Name,
-            //PageId = x.PageId
+            Name = x.Name
         }).ToList();
         return lst;
     }

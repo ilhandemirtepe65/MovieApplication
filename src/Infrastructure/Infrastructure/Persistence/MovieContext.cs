@@ -1,7 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-
 namespace Infrastructure.Persistence
 {
     public class MovieContext : DbContext
@@ -17,7 +16,6 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<PageData>().HasKey(c => c.Id);
             modelBuilder.Entity<Movie>().HasOne<PageData>(s => s.PageData).WithMany(g => g.Results).HasForeignKey(s => s.PageId);
         }
-
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<EntityBase>())

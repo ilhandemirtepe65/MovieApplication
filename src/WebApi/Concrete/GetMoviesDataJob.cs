@@ -6,18 +6,14 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-
 using WebApi.Interface;
-
 namespace WebApi.Concrete;
 public class GetMoviesDataJob : IGetMoviesDataJob
 {
     private readonly IMediator _mediator;
-
     public GetMoviesDataJob(IMediator mediator)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-
     }
 
     [Obsolete]
@@ -26,9 +22,7 @@ public class GetMoviesDataJob : IGetMoviesDataJob
         RecurringJob.AddOrUpdate(() => Console.Write("Easy!"), Cron.MinuteInterval(1), TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time"));//dakikada 1
         await GetData();
         await Task.CompletedTask;
-
     }
-
     public async Task<PageData> GetData()
     {
         string pagenumber = "1";
@@ -52,13 +46,8 @@ public class GetMoviesDataJob : IGetMoviesDataJob
                 root = JsonConvert.DeserializeObject<PageData>(data) ?? new PageData();
             }
         }
-
         await _mediator.Send(new CreatePageDataCommand { PageData = root });
-
-
         return root;
     }
-
-
 }
 

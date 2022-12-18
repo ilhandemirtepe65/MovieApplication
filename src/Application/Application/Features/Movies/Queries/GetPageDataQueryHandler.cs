@@ -1,5 +1,4 @@
 ﻿using Application.Contracts.Persistence;
-using AutoMapper;
 using Domain.Entities;
 using MediatR;
 namespace Application.Features.Movies.Queries
@@ -12,9 +11,7 @@ namespace Application.Features.Movies.Queries
         {
             _pageDataRepository = pageDataRepository ?? throw new ArgumentNullException(nameof(pageDataRepository));
             _movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
-
         }
-
         public async Task<List<Movie>> Handle(GetPageDataQuery request, CancellationToken cancellationToken)
         {
             int pageDataId = _pageDataRepository.GetAllAsync().GetAwaiter().GetResult().FirstOrDefault(x => x.Page == request.PageId).Id;

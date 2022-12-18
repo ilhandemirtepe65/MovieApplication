@@ -12,7 +12,6 @@ public class CreatePageDataCommandHandler : IRequestHandler<CreatePageDataComman
         _pageDataRepository = pageDataRepository ?? throw new ArgumentNullException(nameof(pageDataRepository));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
-
     public async Task<PageData> Handle(CreatePageDataCommand request, CancellationToken cancellationToken)
     {
         PageData pageData = new PageData();
