@@ -1,7 +1,4 @@
 ﻿
-
-
-
 using Application.Behaviours;
 using AutoMapper;
 using FluentValidation;

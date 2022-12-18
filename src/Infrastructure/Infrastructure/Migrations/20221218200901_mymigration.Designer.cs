@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20221218194550_test11")]
-    partial class test11
+    [Migration("20221218200901_mymigration")]
+    partial class mymigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
