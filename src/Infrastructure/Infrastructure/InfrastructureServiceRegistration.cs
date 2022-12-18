@@ -16,6 +16,7 @@ namespace Infrastructure
             services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
            
             services.AddScoped<IPageDataRepository, PageDataRepository>();
+            services.AddScoped<IMovieRepository, MovieRepository>();
             return services;
         }
     }

@@ -20,8 +20,4 @@
     <ProjectReference Include="..\..\Domain\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Movies\Queries\" />
-  </ItemGroup>
-
 </Project>
