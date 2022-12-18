@@ -1,11 +1,8 @@
 ﻿
-
-
 using Application.Contracts.Persistence;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
-
 
 namespace Infrastructure.Repositories
 {
