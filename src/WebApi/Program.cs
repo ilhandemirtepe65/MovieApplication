@@ -1,7 +1,9 @@
 using Application;
 using Hangfire;
 using Infrastructure;
+using Infrastructure.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using WebApi.Concrete;
 using WebApi.Interface;
@@ -18,6 +20,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddTransient<IGetMoviesDataJob, GetMoviesDataJob>();
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<MovieContext>();
+    dataContext.Database.Migrate();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
