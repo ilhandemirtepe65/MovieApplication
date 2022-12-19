@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  webapi:
+    container_name: webapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:MovieConnectionString=Server=moviedb;Database=MovieDb;User Id=sa;Password=van65van"
+      - "ConnectionStrings:JobConnectionString=Server=moviedb;Database=HangfireDb;User Id=sa;Password=van65van"
+    depends_on:
+      - moviedb
+    ports:
+      - "8004:80"
+  moviedb:
+    container_name: moviedb
+    environment:
+        SA_PASSWORD: "van65van"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+        - "1433:1433"
