@@ -6,5 +6,7 @@ services:
     build:
       context: .
       dockerfile: src/WebApi/Dockerfile
+    depends_on:
+      - moviedb
   moviedb:
     image: mcr.microsoft.com/mssql/server:2019-latest

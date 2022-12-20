@@ -38,4 +38,9 @@ app.MapControllers();
 app.UseHangfireServer(new BackgroundJobServerOptions());
 GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 3 });
 //RecurringJobs.GetMovieData();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 app.Run();
