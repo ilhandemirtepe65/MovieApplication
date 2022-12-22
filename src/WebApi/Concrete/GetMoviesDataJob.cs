@@ -8,39 +8,43 @@ namespace WebApi.Concrete;
 public class GetMoviesDataJob : IHostedService
 {
     private readonly IServiceProvider _container;
-    public GetMoviesDataJob( IServiceProvider container)
+    public GetMoviesDataJob(IServiceProvider container)
     {
         _container = container;
     }
-    public async Task<PageData> GetData()
+    public async Task<int> GetData()
     {
-        string pagenumber = "1";
 
-        var query = new Dictionary<string, string>()
+        string[] pages = { "1", "2", "3", "4", "5", "6", "7" };
+        foreach (var item in pages)
         {
-            ["api_key"] = "dd2dfb55d24f7fa100a239cbbd787c3e",
-            ["language"] = "en-US",
-            ["page"] = pagenumber
-        };
-
-        var uri = QueryHelpers.AddQueryString("https://api.themoviedb.org/3/movie/2/lists", query);
-        PageData root = new PageData();
-        using (HttpClient httpclient = new HttpClient())
-        {
-            var result = await httpclient.GetAsync(uri);
-            if (result.IsSuccessStatusCode)
+            var query = new Dictionary<string, string>()
             {
-                Console.WriteLine($"Response status code: {result.StatusCode}");
-                string data = await result.Content.ReadAsStringAsync();
-                root = JsonConvert.DeserializeObject<PageData>(data) ?? new PageData();
+                ["api_key"] = "dd2dfb55d24f7fa100a239cbbd787c3e",
+                ["language"] = "en-US",
+                ["page"] = item
+            };
+
+            var uri = QueryHelpers.AddQueryString("https://api.themoviedb.org/3/movie/2/lists", query);
+            PageData root = new PageData();
+            using (HttpClient httpclient = new HttpClient())
+            {
+                var result = await httpclient.GetAsync(uri);
+                if (result.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"Response status code: {result.StatusCode}");
+                    string data = await result.Content.ReadAsStringAsync();
+                    root = JsonConvert.DeserializeObject<PageData>(data) ?? new PageData();
+                }
+            }
+            using (var scope = _container.CreateScope())
+            {
+                var mediator1 = scope.ServiceProvider.GetRequiredService<IMediator>();
+                await mediator1.Send(new CreatePageDataCommand { PageData = root });
             }
         }
-        using (var scope = _container.CreateScope())
-        {
-            var mediator1 = scope.ServiceProvider.GetRequiredService<IMediator>();
-            await mediator1.Send(new CreatePageDataCommand { PageData = root });
-        }
-        return root;
+
+        return pages.Length;
     }
     public Task StartAsync(CancellationToken cancellationToken)
     {
