@@ -3,17 +3,15 @@ using Application.Features.Movies.Commands.CreatePageData;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
-using NCrontab;
 using Newtonsoft.Json;
 namespace WebApi.Concrete;
 public class GetMoviesDataJob : IHostedService
 {
-    private readonly IMediator _mediator;
-    public GetMoviesDataJob(IMediator mediator)
+    private readonly IServiceProvider _container;
+    public GetMoviesDataJob( IServiceProvider container)
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _container = container;
     }
-
     public async Task<PageData> GetData()
     {
         string pagenumber = "1";
@@ -37,13 +35,17 @@ public class GetMoviesDataJob : IHostedService
                 root = JsonConvert.DeserializeObject<PageData>(data) ?? new PageData();
             }
         }
-        await _mediator.Send(new CreatePageDataCommand { PageData = root });
+        using (var scope = _container.CreateScope())
+        {
+            var mediator1 = scope.ServiceProvider.GetRequiredService<IMediator>();
+            await mediator1.Send(new CreatePageDataCommand { PageData = root });
+        }
         return root;
     }
-
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        GetData();
+        Task.Run(async () => await GetData());
+
         return Task.CompletedTask;
     }
 
@@ -51,23 +53,5 @@ public class GetMoviesDataJob : IHostedService
     {
         return Task.CompletedTask;
     }
-
-    //protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    //{
-    //    Task.Run(() =>
-    //    {
-    //        while (true)
-    //        {
-    //            GetData();
-    //            Task.Delay(1000);
-    //        }
-    //    }));
-
-    //    return Task.CompletedTask;
-
-
-
-
-    //}
 }
 

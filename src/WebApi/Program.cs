@@ -13,11 +13,12 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();
+builder.Services.AddHostedService<GetMoviesDataJob>();
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddHostedService<GetMoviesDataJob>();
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
