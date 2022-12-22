@@ -1,14 +1,12 @@
 ﻿
 using Application.Features.Movies.Commands.CreatePageData;
 using Domain.Entities;
-using Hangfire;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using NCrontab;
 using Newtonsoft.Json;
-using WebApi.Interface;
 namespace WebApi.Concrete;
-public class GetMoviesDataJob : IGetMoviesDataJob
+public class GetMoviesDataJob : IHostedService
 {
     private readonly IMediator _mediator;
     public GetMoviesDataJob(IMediator mediator)
@@ -16,13 +14,6 @@ public class GetMoviesDataJob : IGetMoviesDataJob
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    [Obsolete]
-    public async Task GetMovieData()
-    {
-        RecurringJob.AddOrUpdate(() => Console.Write("Easy!"), Cron.MinuteInterval(1), TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time"));//dakikada 1
-        await GetData();
-        await Task.CompletedTask;
-    }
     public async Task<PageData> GetData()
     {
         string pagenumber = "1";
@@ -49,5 +40,34 @@ public class GetMoviesDataJob : IGetMoviesDataJob
         await _mediator.Send(new CreatePageDataCommand { PageData = root });
         return root;
     }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        GetData();
+        return Task.CompletedTask;
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
+    //protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    //{
+    //    Task.Run(() =>
+    //    {
+    //        while (true)
+    //        {
+    //            GetData();
+    //            Task.Delay(1000);
+    //        }
+    //    }));
+
+    //    return Task.CompletedTask;
+
+
+
+
+    //}
 }
 

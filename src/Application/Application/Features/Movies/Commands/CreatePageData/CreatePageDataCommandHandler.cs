@@ -6,11 +6,10 @@ namespace Application.Features.Movies.Commands.CreatePageData;
 public class CreatePageDataCommandHandler : IRequestHandler<CreatePageDataCommand, PageData>
 {
     private readonly IPageDataRepository _pageDataRepository;
-    private readonly ILogger<CreatePageDataCommandHandler> _logger;
-    public CreatePageDataCommandHandler(IPageDataRepository pageDataRepository, ILogger<CreatePageDataCommandHandler> logger)
+    public CreatePageDataCommandHandler(IPageDataRepository pageDataRepository)
     {
         _pageDataRepository = pageDataRepository ?? throw new ArgumentNullException(nameof(pageDataRepository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+       
     }
     public async Task<PageData> Handle(CreatePageDataCommand request, CancellationToken cancellationToken)
     {

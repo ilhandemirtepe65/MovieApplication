@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.9'
 
 services:
   webapi:
@@ -6,7 +6,23 @@ services:
     build:
       context: .
       dockerfile: src/WebApi/Dockerfile
+    container_name: webapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:MovieConnectionString=Server=moviedb;Database=MovieDb;User Id=sa;Password=van65van"
     depends_on:
       - moviedb
   moviedb:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: moviedb
+    environment:
+        SA_PASSWORD: "van65van"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+        - "5433:1433"
+    volumes:
+      - movie-sqldata:/var/opt/mssql
+volumes:
+  movie-sqldata:
+    external: false

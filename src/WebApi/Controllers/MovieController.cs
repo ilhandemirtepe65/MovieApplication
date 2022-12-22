@@ -10,11 +10,9 @@ namespace WebApi.Controllers;
 public class MovieController : ControllerBase
 {
 
-    private readonly ILogger<MovieController> _logger;
     private readonly IMediator _mediator;
-    public MovieController(ILogger<MovieController> logger, IMediator mediator)
+    public MovieController(IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
     [HttpGet(Name = "Movie")]

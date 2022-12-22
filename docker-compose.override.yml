@@ -1,29 +1,8 @@
-version: '3.4'
+version: '3.9'
 
 services:
   webapi:
-    container_name: webapi
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:MovieConnectionString=Server=moviedb;Database=MovieDb;User Id=sa;Password=van65van"
-      - "ConnectionStrings:JobConnectionString=Server=moviedb;Database=HangfireDb;User Id=sa;Password=van65van"
-   
     ports:
       - "7000:80"
-  moviedb:
-    container_name: moviedb
-    environment:
-        SA_PASSWORD: "van65van"
-        ACCEPT_EULA: "Y"
-    restart: always
-    ports:
-        - "5433:1433"
-    volumes:
-      - movie-sqldata:/var/opt/mssql
-volumes:
-  movie-sqldata:
-    external: false
-
-
-#https://blog.christian-schou.dk/dockerize-net-core-web-api-with-ms-sql-server/
-#https://www.twilio.com/blog/containerize-your-aspdotnet-core-application-and-sql-server-with-docker
